@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -95,6 +97,30 @@ public class ViewGUI implements ActionListener {
         titleLabel.setForeground(Color.WHITE);
         mainPanel.add(titleLabel);
 
+        JLabel userLabel = new JLabel("UserName:");
+        userLabel.setFont(new java.awt.Font("yu mincho", 1, 15));
+        //
+        userLabel.setForeground(Color.WHITE);
+        mainPanel.add(userLabel);
+
+        JTextField userText = new JTextField(20);
+        userText.setFont(new java.awt.Font("yu mincho", 0, 12));
+        userText.setForeground(Color.BLACK);
+        mainPanel.add(userText);
+
+        JLabel figureLabel = new JLabel("Choose a figure:");
+        figureLabel.setFont(new java.awt.Font("yu mincho", 1, 15));
+        figureLabel.setForeground(Color.WHITE);
+        mainPanel.add(figureLabel);
+
+        String[] figures = { "Circle", "Cross" };
+        JComboBox figureChoose = new JComboBox(figures);
+        Dimension size = new Dimension(170, 30);
+        figureChoose.setPreferredSize(size);
+        figureChoose.setFont(new java.awt.Font("yu mincho", 1, 12));
+        figureChoose.setForeground(Color.BLACK);
+        mainPanel.add(figureChoose);
+
         mainFrame.setContentPane(mainPanel);
     }
 
@@ -117,7 +143,7 @@ public class ViewGUI implements ActionListener {
         mainPanel.add(titleLabel);
 
         historyTable = new HistoryMenuTable();
-        
+
         JScrollPane scrollPane = new JScrollPane(historyTable);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
