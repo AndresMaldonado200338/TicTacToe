@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class ViewGUI implements ActionListener {
+public class ViewGUI {
 
     private Font mainFont;
     private Color mainColor;
@@ -22,6 +22,8 @@ public class ViewGUI implements ActionListener {
     private JLabel titleLabel;
     private JButton playButton;
     private JButton historyButton;
+    private JButton continueButton;
+    private JButton backButton;
 
     private HistoryMenuTable historyTable;
 
@@ -57,7 +59,14 @@ public class ViewGUI implements ActionListener {
         playButton.setForeground(mainColor);
         playButton.setBackground(Color.WHITE);
         playButton.setFocusPainted(false);
-        playButton.addActionListener(this);
+        playButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == playButton) {
+                    playMenu();
+                }
+            }
+        });
+
         mainPanel.add(playButton);
 
         historyButton = new JButton("Show History");
@@ -65,25 +74,23 @@ public class ViewGUI implements ActionListener {
         historyButton.setBackground(Color.WHITE);
         historyButton.setForeground(new Color(180, 0, 64));
         historyButton.setFocusPainted(false);
-        historyButton.addActionListener(this);
+        historyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == historyButton) {
+                    historyMenu();
+                }
+            }
+        });
         mainPanel.add(historyButton);
 
         mainFrame.setContentPane(mainPanel);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == playButton) {
-            playMenu();
-        }
-        if (e.getSource() == historyButton) {
-            historyMenu();
-        }
     }
 
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
         mainFrame.setSize(500, 500);
+        mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
         mainFrame.setVisible(true);
@@ -99,7 +106,6 @@ public class ViewGUI implements ActionListener {
 
         JLabel userLabel = new JLabel("UserName:");
         userLabel.setFont(new java.awt.Font("yu mincho", 1, 15));
-        //
         userLabel.setForeground(Color.WHITE);
         mainPanel.add(userLabel);
 
@@ -113,13 +119,44 @@ public class ViewGUI implements ActionListener {
         figureLabel.setForeground(Color.WHITE);
         mainPanel.add(figureLabel);
 
-        String[] figures = { "Circle", "Cross" };
+        String[] figures = { "Select", "Circle", "Cross" };
         JComboBox figureChoose = new JComboBox(figures);
         Dimension size = new Dimension(170, 30);
         figureChoose.setPreferredSize(size);
         figureChoose.setFont(new java.awt.Font("yu mincho", 1, 12));
         figureChoose.setForeground(Color.BLACK);
         mainPanel.add(figureChoose);
+
+        continueButton = new JButton("Continue");
+        continueButton.setFont(new java.awt.Font("yu mincho", 1, 30));
+        continueButton.setBackground(Color.WHITE);
+        continueButton.setForeground(new Color(180, 0, 64));
+        continueButton.setFocusPainted(false);
+        continueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (userText.getText().isEmpty() || figureChoose.getSelectedItem().equals("Select")) {
+                    JOptionPane.showMessageDialog(mainFrame, "Error, por favor completar los campos", "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    gameMenu();
+                }
+            }
+        });
+        mainPanel.add(continueButton);
+
+        backButton = new JButton("Back");
+        backButton.setFont(new java.awt.Font("yu mincho", 1, 30));
+        backButton.setBackground(Color.WHITE);
+        backButton.setForeground(new Color(180, 0, 64));
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == backButton) {
+                    mainMenu();
+                }
+            }
+        });
+        mainPanel.add(backButton);
 
         mainFrame.setContentPane(mainPanel);
     }
@@ -128,6 +165,7 @@ public class ViewGUI implements ActionListener {
         mainFrame = new JFrame();
         mainFrame.setTitle("Historial de partidas");
         mainFrame.setSize(500, 500);
+        mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         ImageIcon mainIcon = new ImageIcon("Triki/src/resources/mainIcon.png");
         mainFrame.setIconImage(mainIcon.getImage());
@@ -146,6 +184,23 @@ public class ViewGUI implements ActionListener {
 
         JScrollPane scrollPane = new JScrollPane(historyTable);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        mainFrame.setContentPane(mainPanel);
+    }
+
+    public void gameMenu() {
+        mainFrame = new JFrame();
+        mainFrame.setTitle("Juego");
+        mainFrame.setSize(500, 500);
+        mainFrame.setResizable(false);
+        mainFrame.setLocationRelativeTo(null);
+        ImageIcon mainIcon = new ImageIcon("Triki/src/resources/mainIcon.png");
+        mainFrame.setIconImage(mainIcon.getImage());
+        mainFrame.setVisible(true);
+
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 70));
+        mainPanel.setBackground(new Color(180, 0, 64));
 
         mainFrame.setContentPane(mainPanel);
     }
