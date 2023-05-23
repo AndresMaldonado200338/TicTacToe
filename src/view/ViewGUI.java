@@ -6,9 +6,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import model.TicTacToe;
 import model.User;
 
 public class ViewGUI {
@@ -24,10 +28,19 @@ public class ViewGUI {
     private JTextField userText;
     private JComboBox figureChoose;
     private JTabbedPane tabbedPane;
+    JRadioButton[][] radioButtons;
 
     private HistoryMenuTable historyTable;
 
     private ActionListener listener;
+
+    private int rows = 3;
+    private int columns = 3;
+    private String member1 = "William Darío Cely López - 20202319";
+    private String member2 = "Andrés Leonardo Maldonado Sánchez - 202014503";
+    private String universityFacult = "Facultad de Ingeniería";
+    private String universitySchool = "Escuela de Ingeniería de Sistemas y Computación";
+    private String universitySemester = "2023-1";
 
     public ViewGUI(ActionListener listener) {
         this.listener = listener;
@@ -80,7 +93,7 @@ public class ViewGUI {
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
-        mainFrame.setSize(500, 600);
+        mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
@@ -180,7 +193,29 @@ public class ViewGUI {
         mainPanel.setBackground(new Color(180, 0, 64));
 
         JPanel pane1 = new JPanel();
-
+        pane1.setLayout(new GridLayout(rows, columns));
+        TicTacToe board = new TicTacToe();
+        board.initBoard();
+        radioButtons = board.getBoard();
+        for (int row = 0; row < radioButtons.length; row++) {
+            for (int col = 0; col < radioButtons[row].length; col++) {
+                
+                radioButtons[row][col].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JRadioButton selectedButton = (JRadioButton) e.getSource();
+                        for (int row = 0; row < radioButtons.length; row++) {
+                            for (int col = 0; col < radioButtons[row].length; col++) {
+                                if (radioButtons[row][col] == selectedButton) {
+                                    board.playerTurn(row, col);
+                                }
+                            }
+                        }
+                    }
+                });
+                pane1.add(radioButtons[row][col]);
+            }
+        }
 
         JPanel pane2 = new JPanel();
         pane2.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 70));
@@ -192,6 +227,25 @@ public class ViewGUI {
         pane2.add(userFigureLabel);
 
         JPanel pane3 = new JPanel();
+        pane3.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 30));
+        JLabel memberLabel1 = new JLabel(member1);
+        memberLabel1.setFont(new java.awt.Font("yu mincho", 1, 15));
+        JLabel memberLabel2 = new JLabel(member2);
+        memberLabel2.setFont(new java.awt.Font("yu mincho", 1, 15));
+        JLabel universityLabel = new JLabel(universityFacult);
+        universityLabel.setFont(new java.awt.Font("yu mincho", 1, 15));
+        JLabel universityLabel2 = new JLabel(universitySchool);
+        universityLabel2.setFont(new java.awt.Font("yu mincho", 1, 15));
+        JLabel universityLabel3 = new JLabel(universitySemester);
+        universityLabel3.setFont(new java.awt.Font("yu mincho", 1, 15));
+        Image image = new ImageIcon("Triki/src/resources/uptc.png").getImage();
+        JLabel uptcLabel = new JLabel(new ImageIcon(image.getScaledInstance(400, 150, Image.SCALE_DEFAULT)));
+        pane3.add(memberLabel1);
+        pane3.add(memberLabel2);
+        pane3.add(universityLabel);
+        pane3.add(universityLabel2);
+        pane3.add(universityLabel3);
+        pane3.add(uptcLabel);
 
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Tab1", pane1);
@@ -241,5 +295,17 @@ public class ViewGUI {
 
     public JComboBox getFigureChoose() {
         return figureChoose;
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    public JRadioButton[][] getRadioButtons() {
+        return radioButtons;
+    }
+
+    public HistoryMenuTable getHistoryTable() {
+        return historyTable;
     }
 }
