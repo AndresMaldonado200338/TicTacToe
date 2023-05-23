@@ -11,6 +11,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import model.TicTacToe;
 import model.User;
 
 public class ViewGUI {
@@ -191,8 +193,28 @@ public class ViewGUI {
 
         JPanel pane1 = new JPanel();
         pane1.setLayout(new GridLayout(rows, columns));
-        radioButtons = new JRadioButton[rows][columns];
-        ButtonGroup buttonGroup = new ButtonGroup();
+        TicTacToe board = new TicTacToe();
+        board.initBoard();
+        radioButtons = board.getBoard();
+        for (int row = 0; row < radioButtons.length; row++) {
+            for (int col = 0; col < radioButtons[row].length; col++) {
+                
+                radioButtons[row][col].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JRadioButton selectedButton = (JRadioButton) e.getSource();
+                        for (int row = 0; row < radioButtons.length; row++) {
+                            for (int col = 0; col < radioButtons[row].length; col++) {
+                                if (radioButtons[row][col] == selectedButton) {
+                                    board.playerTurn(row, col);
+                                }
+                            }
+                        }
+                    }
+                });
+                pane1.add(radioButtons[row][col]);
+            }
+        }
 
         JPanel pane2 = new JPanel();
         pane2.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 70));
@@ -272,5 +294,17 @@ public class ViewGUI {
 
     public JComboBox getFigureChoose() {
         return figureChoose;
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
+    public JRadioButton[][] getRadioButtons() {
+        return radioButtons;
+    }
+
+    public HistoryMenuTable getHistoryTable() {
+        return historyTable;
     }
 }

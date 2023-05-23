@@ -1,54 +1,40 @@
 package model;
 
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
-import javax.swing.JFrame;
-import view.ImagePanel;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JRadioButton;
 
 public class TicTacToe {
-    private String[][] board;
+    private JRadioButton[][] board;
+    private ButtonGroup buttonGroup;
+
     private User user;
-    private String player;
-    private String computer;
+    private ImageIcon player;
+    private ImageIcon computer;
     private boolean gameOver;
     private GameStatus gameStatus;
     private LocalDateTime gameTime;
     private DateTimeFormatter formatter;
+
     private String path = "Triki/src/resources/History/history_game.txt";
+    private ImageIcon circle = new ImageIcon("Triki/src/resources/Figures/O.png");
+    private ImageIcon cross = new ImageIcon("Triki/src/resources/Figures/X.png");
+    private ImageIcon background = new ImageIcon("Triki/src/resources/Marco.png");
 
-   
-    private JFrame frame;
-    private ImagePanel imagePanel;
-
-    /**
-     * 
-     */
     public TicTacToe() {
-        board = new String[3][3];
+        board = new JRadioButton[3][3];
+        buttonGroup = new ButtonGroup();
         gameOver = false;
         gameTime = LocalDateTime.now();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        
-        frame = new JFrame("Tic Tac Toe");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(300, 300));
-
-      
-        imagePanel = new ImagePanel("IconMain.png"); 
-        frame.getContentPane().add(imagePanel, BorderLayout.CENTER);
-
-      
-        frame.pack();
-        frame.setLocationRelativeTo(null); 
-        frame.setVisible(true);
     }
 
     public void setGameStatus(GameStatus gameStatus) {
@@ -62,37 +48,31 @@ public class TicTacToe {
     public void initBoard() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                board[row][col] = "-";
+                board[row][col] = new JRadioButton();
+                board[row][col].setIcon(new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH)));
+                buttonGroup.add(board[row][col]);
             }
         }
     }
 
-    public String showBoard() {
-        String myBoard = "-------------\n";
-        for (int row = 0; row < board.length; row++) {
-            myBoard += "| ";
-            for (int col = 0; col < board[row].length; col++) {
-                myBoard += board[row][col] + " | ";
-            }
-            myBoard += "\n-------------\n";
-        }
-        return myBoard;
+    public JRadioButton[][] getBoard() {
+        return board;
     }
 
     public void chooseFigure(User user) {
         this.user = user;
-        player = user.getUserFigure();
-        computer = (player.equals("X")) ? "O" : "X";
+        player = (user.getUserFigure().equals("Circle") ? circle : cross);
+        computer = (player == circle ? cross : circle);
     }
 
     public boolean isCellEmpty(int row, int col) {
-        return board[row][col] == "-";
+        return board[row][col].getIcon() == new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
     }
 
     public boolean isFullBoard() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                if (board[row][col] == "-") {
+                if (board[row][col].getIcon() == new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH))) {
                     return false;
                 }
             }
@@ -101,28 +81,28 @@ public class TicTacToe {
     }
 
     public void removeFigure(int row, int col) {
-        board[row][col] = "-";
+        board[row][col].setIcon(new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH)));
     }
 
     private boolean isValidPosition(int row, int col) {
         return row >= 0 && row < board.length && col >= 0 && col < board[row].length;
     }
 
-    public void playerTurn(int i, int j) {
-        placeFigure(i, j, player);
+    public void playerTurn(int row, int col) {
+        placeFigure(row, col, player);
     }
 
     public void machineTurn(Random row, Random column) {
         boolean machinePlaced = tryToWin(computer);
         if (!machinePlaced) {
-            machinePlaced = tryToBlock(user.getUserFigure());
+            machinePlaced = tryToBlock(player);
         }
         if (!machinePlaced) {
             placeRandomFigure(row, column);
         }
     }
 
-    private boolean tryToWin(String figure) {
+    private boolean tryToWin(ImageIcon figure) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 if (isCellEmpty(row, col)) {
@@ -138,7 +118,7 @@ public class TicTacToe {
         return false;
     }
 
-    private boolean tryToBlock(String figure) {
+    private boolean tryToBlock(ImageIcon figure) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 if (isCellEmpty(row, col)) {
@@ -146,7 +126,7 @@ public class TicTacToe {
                     boolean playerWinningMove = checkForWinner(player);
                     removeFigure(row, col);
                     if (playerWinningMove) {
-                        placeFigure(row, col, computer);
+                        placeFigure(row, col, figure);
                         return true;
                     }
                 }
@@ -163,35 +143,36 @@ public class TicTacToe {
         }
     }
 
-    public void placeFigure(int row, int col, String figure) {
+    public void placeFigure(int row, int col, ImageIcon figure) {
         if (isValidPosition(row, col) && isCellEmpty(row, col)) {
-            board[row][col] = figure;
-            imagePanel.repaint(); 
+            board[row][col].setIcon(figure);
         }
     }
 
-    public boolean checkForWinner(String figure) {
+    public boolean checkForWinner(ImageIcon figure) {
         for (int row = 0; row < board.length; row++) {
-            if (board[row][0] == figure && board[row][1] == figure && board[row][2] == figure) {
+            if (board[row][0].getIcon() == figure && board[row][1].getIcon() == figure
+                    && board[row][2].getIcon() == figure) {
                 return true;
             }
         }
         for (int col = 0; col < board[0].length; col++) {
-            if (board[0][col] == figure && board[1][col] == figure && board[2][col] == figure) {
+            if (board[0][col].getIcon() == figure && board[1][col].getIcon() == figure
+                    && board[2][col].getIcon() == figure) {
                 return true;
             }
         }
-        if (board[0][0] == figure && board[1][1] == figure && board[2][2] == figure) {
+        if (board[0][0].getIcon() == figure && board[1][1].getIcon() == figure && board[2][2].getIcon() == figure) {
             return true;
         }
-        if (board[0][2] == figure && board[1][1] == figure && board[2][0] == figure) {
+        if (board[0][2].getIcon() == figure && board[1][1].getIcon() == figure && board[2][0].getIcon() == figure) {
             return true;
         }
         return false;
     }
 
     public boolean checkGameOver() {
-        if (checkForWinner(user.getUserFigure())) {
+        if (checkForWinner(player)) {
             setGameStatus(GameStatus.WINNER);
             System.out.println(getGameStatus());
             gameOver = true;
@@ -216,7 +197,7 @@ public class TicTacToe {
                     + gameTime.format(formatter));
             bufferedWriter.newLine();
         } catch (IOException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
 }

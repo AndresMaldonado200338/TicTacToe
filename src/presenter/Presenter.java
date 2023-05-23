@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import model.*;
 import view.*;
@@ -28,19 +30,20 @@ public class Presenter implements ActionListener {
         viewGUI.historyMenu();
     }
 
-    public void gameScreen(){
+    public void gameScreen() {
         viewGUI.gameMenu(user);
+        ticTacToe.chooseFigure(user);
     }
 
     public void game() {
         while (!ticTacToe.isFullBoard() && !ticTacToe.checkGameOver()) {
             userTurn();
-            //view.showGraphicMessage(ticTacToe.showBoard());
+            // view.showGraphicMessage(ticTacToe.showBoard());
             if (ticTacToe.checkGameOver()) {
                 break;
             }
             machineTurn();
-            //view.showGraphicMessage(ticTacToe.showBoard());
+            // view.showGraphicMessage(ticTacToe.showBoard());
             if (ticTacToe.checkGameOver()) {
                 break;
             }
@@ -50,11 +53,11 @@ public class Presenter implements ActionListener {
 
     public void userTurn() {
         try {
-            //short row = view.readGraphicShort("Ingrese la fila (1 al 3)");
-            //short col = view.readGraphicShort("Ingrese la columna (1 al 3)");
-            //ticTacToe.playerTurn((row - 1), (col - 1));
+            // short row = view.readGraphicShort("Ingrese la fila (1 al 3)");
+            // short col = view.readGraphicShort("Ingrese la columna (1 al 3)");
+            // ticTacToe.playerTurn((row - 1), (col - 1));
         } catch (ArrayIndexOutOfBoundsException e) {
-            //view.showErrorMessage(e.getMessage());
+            // view.showErrorMessage(e.getMessage());
             userTurn();
         }
     }
