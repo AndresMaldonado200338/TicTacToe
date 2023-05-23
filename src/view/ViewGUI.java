@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -35,7 +36,7 @@ public class ViewGUI {
 
     private int rows = 3;
     private int columns = 3;
-    private String member1 = "William Darío Cely López - 202012319";
+    private String member1 = "William Darío Cely López - 20202319";
     private String member2 = "Andrés Leonardo Maldonado Sánchez - 202014503";
     private String universityFacult = "Facultad de Ingeniería";
     private String universitySchool = "Escuela de Ingeniería de Sistemas y Computación";
@@ -92,7 +93,7 @@ public class ViewGUI {
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
-        mainFrame.setSize(500, 600);
+        mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
@@ -158,7 +159,6 @@ public class ViewGUI {
         ImageIcon mainIcon = new ImageIcon("Triki/src/resources/mainIcon.png");
         mainFrame.setIconImage(mainIcon.getImage());
         mainFrame.setVisible(true);
-        mainIcon.setImage(null);
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 70));
