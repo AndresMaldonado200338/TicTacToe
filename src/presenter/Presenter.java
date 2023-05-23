@@ -34,7 +34,7 @@ public class Presenter implements ActionListener {
 
     public void game() {
         while (!ticTacToe.isFullBoard() && !ticTacToe.checkGameOver()) {
-            userTurn();
+            
             // view.showGraphicMessage(ticTacToe.showBoard());
             if (ticTacToe.checkGameOver()) {
                 break;
