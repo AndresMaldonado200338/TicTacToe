@@ -1,11 +1,16 @@
 package model;
 
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import javax.swing.JFrame;
+import view.ImagePanel;
 
 public class TicTacToe {
     private String[][] board;
@@ -18,12 +23,32 @@ public class TicTacToe {
     private DateTimeFormatter formatter;
     private String path = "Triki/src/resources/History/history_game.txt";
 
+   
+    private JFrame frame;
+    private ImagePanel imagePanel;
+
+    /**
+     * 
+     */
     public TicTacToe() {
         board = new String[3][3];
         gameOver = false;
         gameTime = LocalDateTime.now();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+        
+        frame = new JFrame("Tic Tac Toe");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(300, 300));
+
+      
+        imagePanel = new ImagePanel("IconMain.png"); 
+        frame.getContentPane().add(imagePanel, BorderLayout.CENTER);
+
+      
+        frame.pack();
+        frame.setLocationRelativeTo(null); 
+        frame.setVisible(true);
     }
 
     public void setGameStatus(GameStatus gameStatus) {
@@ -141,6 +166,7 @@ public class TicTacToe {
     public void placeFigure(int row, int col, String figure) {
         if (isValidPosition(row, col) && isCellEmpty(row, col)) {
             board[row][col] = figure;
+            imagePanel.repaint(); 
         }
     }
 
