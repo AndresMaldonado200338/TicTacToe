@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
 
@@ -17,8 +18,10 @@ public class TicTacToe {
     private ButtonGroup buttonGroup;
 
     private User user;
-    private ImageIcon player;
-    private ImageIcon computer;
+    private ImageIcon playerF;
+    private Icon player;
+    private ImageIcon computerF;
+    private Icon computer;
     private boolean gameOver;
     private GameStatus gameStatus;
     private LocalDateTime gameTime;
@@ -26,8 +29,11 @@ public class TicTacToe {
 
     private String path = "Triki/src/resources/History/history_game.txt";
     private ImageIcon circle = new ImageIcon("Triki/src/resources/Figures/O.png");
+    private Icon circleIcon = new ImageIcon(circle.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
     private ImageIcon cross = new ImageIcon("Triki/src/resources/Figures/X.png");
+    private Icon crossIcon = new ImageIcon(cross.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
     private ImageIcon background = new ImageIcon("Triki/src/resources/Marco.png");
+    private Icon backgroundIcon = new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
 
     public TicTacToe() {
         board = new JRadioButton[3][3];
@@ -49,7 +55,7 @@ public class TicTacToe {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 board[row][col] = new JRadioButton();
-                board[row][col].setIcon(new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH)));
+                board[row][col].setIcon(backgroundIcon);
                 buttonGroup.add(board[row][col]);
             }
         }
@@ -61,18 +67,19 @@ public class TicTacToe {
 
     public void chooseFigure(User user) {
         this.user = user;
-        player = (user.getUserFigure().equals("Circle") ? circle : cross);
-        computer = (player == circle ? cross : circle);
+        player =  user.getUserFigure().equals("Circle") ? crossIcon : circleIcon;
+        computer = player == crossIcon ? circleIcon : crossIcon;
+        System.out.println("Player: " + player + "\nComputer: " + computer);
     }
 
     public boolean isCellEmpty(int row, int col) {
-        return board[row][col].getIcon() == new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
+        return board[row][col].getIcon() == backgroundIcon;
     }
 
     public boolean isFullBoard() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                if (board[row][col].getIcon() == new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH))) {
+                if (board[row][col].getIcon() == backgroundIcon) {
                     return false;
                 }
             }
@@ -81,7 +88,7 @@ public class TicTacToe {
     }
 
     public void removeFigure(int row, int col) {
-        board[row][col].setIcon(new ImageIcon(background.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH)));
+        board[row][col].setIcon(backgroundIcon);
     }
 
     private boolean isValidPosition(int row, int col) {
@@ -102,7 +109,7 @@ public class TicTacToe {
         }
     }
 
-    private boolean tryToWin(ImageIcon figure) {
+    private boolean tryToWin(Icon figure) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 if (isCellEmpty(row, col)) {
@@ -118,7 +125,7 @@ public class TicTacToe {
         return false;
     }
 
-    private boolean tryToBlock(ImageIcon figure) {
+    private boolean tryToBlock(Icon figure) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 if (isCellEmpty(row, col)) {
@@ -143,13 +150,13 @@ public class TicTacToe {
         }
     }
 
-    public void placeFigure(int row, int col, ImageIcon figure) {
+    public void placeFigure(int row, int col, Icon figure) {
         if (isValidPosition(row, col) && isCellEmpty(row, col)) {
             board[row][col].setIcon(figure);
         }
     }
 
-    public boolean checkForWinner(ImageIcon figure) {
+    public boolean checkForWinner(Icon figure) {
         for (int row = 0; row < board.length; row++) {
             if (board[row][0].getIcon() == figure && board[row][1].getIcon() == figure
                     && board[row][2].getIcon() == figure) {

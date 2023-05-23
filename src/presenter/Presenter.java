@@ -3,10 +3,7 @@ package presenter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import model.*;
 import view.*;
