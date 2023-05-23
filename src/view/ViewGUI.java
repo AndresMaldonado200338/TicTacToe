@@ -91,7 +91,7 @@ public class ViewGUI {
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
-        mainFrame.setSize(600, 600);
+        mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
