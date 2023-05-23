@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -93,7 +92,7 @@ public class ViewGUI {
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
-        mainFrame.setSize(500, 500);
+        mainFrame.setSize(500, 600);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
