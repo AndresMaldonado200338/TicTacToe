@@ -206,7 +206,6 @@ public class ViewGUI {
                         for (int row = 0; row < radioButtons.length; row++) {
                             for (int col = 0; col < radioButtons[row].length; col++) {
                                 if (radioButtons[row][col] == selectedButton) {
-                                    board.playerTurn(row, col);
                                 }
                             }
                         }

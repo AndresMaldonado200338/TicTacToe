@@ -48,17 +48,6 @@ public class Presenter implements ActionListener {
         ticTacToe.saveResults();
     }
 
-    public void userTurn() {
-        try {
-            // short row = view.readGraphicShort("Ingrese la fila (1 al 3)");
-            // short col = view.readGraphicShort("Ingrese la columna (1 al 3)");
-            // ticTacToe.playerTurn((row - 1), (col - 1));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            // view.showErrorMessage(e.getMessage());
-            userTurn();
-        }
-    }
-
     public void machineTurn() {
         ticTacToe.machineTurn(new Random(), new Random());
     }

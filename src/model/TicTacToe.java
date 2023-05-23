@@ -69,7 +69,6 @@ public class TicTacToe {
         this.user = user;
         player =  user.getUserFigure().equals("Circle") ? crossIcon : circleIcon;
         computer = player == crossIcon ? circleIcon : crossIcon;
-        System.out.println("Player: " + player + "\nComputer: " + computer);
     }
 
     public boolean isCellEmpty(int row, int col) {
