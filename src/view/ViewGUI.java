@@ -146,6 +146,7 @@ public class ViewGUI {
         ImageIcon mainIcon = new ImageIcon("Triki/src/resources/mainIcon.png");
         mainFrame.setIconImage(mainIcon.getImage());
         mainFrame.setVisible(true);
+        mainIcon.setImage(null);
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 70));
