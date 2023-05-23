@@ -1,78 +1,46 @@
 package presenter;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import model.*;
 import view.*;
 
-public class Presenter {
+public class Presenter implements ActionListener {
     private TicTacToe ticTacToe;
     private User user;
-    private View view;
+    private ViewGUI viewGUI;
 
     public Presenter() {
         ticTacToe = new TicTacToe();
-        view = new View();
+        viewGUI = new ViewGUI(this);
         user = new User();
-        play();
     }
 
-    public void play() {
-        ticTacToe.initBoard();
-        int option = view.readGraphicInt("Bienvenido a Triki\n1. Jugar\n2. Salir");
-        switch (option) {
-            case 1:
-                game();
-                play();
-                break;
-            case 2:
-                view.showGraphicMessage("Gracias por jugar");
-                System.exit(0);
-            default:
-                view.showErrorMessage("Opcion no valida");
-                play();
-        }
+    public void userCreate() {
+        viewGUI.playMenu();
     }
 
-    public void createUser() {
-        user.setUserName(view.readGraphicString("Ingrese su nombre"));
-        view.showGraphicMessage("usuario registrado como: " + user.getUserName());
+    public void history() {
+        viewGUI.historyMenu();
     }
 
-    public void chooseFigure() {
-        short option = view.readGraphicShort("Ingrese la figura que desea usar\n1. CIRCULO\n2. EQUIS");
-        try {
-            switch (option) {
-                case 1:
-                    user.setUserFigure(Figure.CIRCLE);
-                    view.showGraphicMessage("Figura creada con exito: " + user.getUserFigure());
-                    break;
-                case 2:
-                    user.setUserFigure(Figure.CROSS);
-                    view.showGraphicMessage("Figura creada con exito: " + user.getUserFigure());
-                    break;
-                default:
-                    view.showGraphicMessage("Opcion no valida");
-                    break;
-            }
-            ticTacToe.chooseFigure(user);
-        } catch (NullPointerException e) {
-            view.showErrorMessage(e.getMessage());
-        }
-
+    public void gameScreen(){
+        viewGUI.gameMenu(user);
     }
 
     public void game() {
-        createUser();
-        chooseFigure();
         while (!ticTacToe.isFullBoard() && !ticTacToe.checkGameOver()) {
             userTurn();
-            view.showGraphicMessage(ticTacToe.showBoard());
+            //view.showGraphicMessage(ticTacToe.showBoard());
             if (ticTacToe.checkGameOver()) {
                 break;
             }
             machineTurn();
-            view.showGraphicMessage(ticTacToe.showBoard());
+            //view.showGraphicMessage(ticTacToe.showBoard());
             if (ticTacToe.checkGameOver()) {
                 break;
             }
@@ -82,17 +50,47 @@ public class Presenter {
 
     public void userTurn() {
         try {
-            short row = view.readGraphicShort("Ingrese la fila (1 al 3)");
-            short col = view.readGraphicShort("Ingrese la columna (1 al 3)");
-            ticTacToe.playerTurn((row - 1), (col - 1));
+            //short row = view.readGraphicShort("Ingrese la fila (1 al 3)");
+            //short col = view.readGraphicShort("Ingrese la columna (1 al 3)");
+            //ticTacToe.playerTurn((row - 1), (col - 1));
         } catch (ArrayIndexOutOfBoundsException e) {
-            view.showErrorMessage(e.getMessage());
+            //view.showErrorMessage(e.getMessage());
             userTurn();
         }
     }
 
     public void machineTurn() {
         ticTacToe.machineTurn(new Random(), new Random());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals(viewGUI.getPlayButton().getText())) {
+            userCreate();
+        }
+        if (command.equals(viewGUI.getHistoryButton().getText())) {
+            history();
+        }
+        if (command.equals(viewGUI.getContinueButton().getText())) {
+            if (viewGUI.getUserText().getText().isEmpty()
+                    || viewGUI.getFigureChoose().getSelectedItem().equals("Select")) {
+                JOptionPane.showMessageDialog(viewGUI.getMainFrame(), "Error, por favor completar los campos", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                user.setUserName(viewGUI.getUserText().getText());
+                String userFigure = viewGUI.getFigureChoose().getSelectedItem().toString();
+                Figure figure = (userFigure.equals("Circle")) ? Figure.CIRCLE : Figure.CROSS;
+                user.setUserFigure(figure);
+                viewGUI.getMainFrame().dispose();
+                System.out.println(user);
+                gameScreen();
+            }
+        }
+        if (command.equals(viewGUI.getBackButton().getText())) {
+            viewGUI.getMainFrame().dispose();
+            viewGUI.mainMenu();
+        }
     }
 
     public static void main(String[] args) {
