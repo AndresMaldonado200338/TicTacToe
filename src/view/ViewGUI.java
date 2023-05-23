@@ -38,7 +38,7 @@ public class ViewGUI {
 
         mainFrame = new JFrame();
         mainFrame.setTitle("Triki");
-        mainFrame.setSize(500, 500);
+        mainFrame.setSize(700, 700);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setResizable(false);
@@ -80,7 +80,7 @@ public class ViewGUI {
     public void playMenu() {
         mainFrame = new JFrame();
         mainFrame.setTitle("Panel de jugador");
-        mainFrame.setSize(500, 500);
+        mainFrame.setSize(600, 600);
         mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setIconImage(mainIcon.getImage());
