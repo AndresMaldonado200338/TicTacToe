@@ -35,7 +35,7 @@ public class ViewGUI {
 
     private int rows = 3;
     private int columns = 3;
-    private String member1 = "William Darío Cely López - 20202319";
+    private String member1 = "William Darío Cely López - 202012319";
     private String member2 = "Andrés Leonardo Maldonado Sánchez - 202014503";
     private String universityFacult = "Facultad de Ingeniería";
     private String universitySchool = "Escuela de Ingeniería de Sistemas y Computación";
