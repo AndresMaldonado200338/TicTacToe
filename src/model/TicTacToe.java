@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,13 +7,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
-import java.util.Scanner;
-
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 public class TicTacToe {
@@ -235,48 +230,6 @@ public class TicTacToe {
             if (checkForWinner(computer)) {
                 checkGameOver();
                 saveResults();
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-        User u = new User();
-        u.setUserFigure(Figure.CROSS);
-        u.setUserName("Juan");
-        TicTacToe t = new TicTacToe();
-        t.chooseFigure(u);
-        t.initBoard();
-
-        JFrame frame = new JFrame();
-        frame.setSize(500, 500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 3));
-        panel.add(t.board[0][0]);
-        panel.add(t.board[0][1]);
-        panel.add(t.board[0][2]);
-        panel.add(t.board[1][0]);
-        panel.add(t.board[1][1]);
-        panel.add(t.board[1][2]);
-        panel.add(t.board[2][0]);
-        panel.add(t.board[2][1]);
-        panel.add(t.board[2][2]);
-
-        frame.add(panel);
-        while (t.getGameOver() == false && t.isFullBoard() == false) {
-            t.playerTurn(sc.nextInt(), sc.nextInt());
-            if (t.checkForWinner(t.player)) {
-                t.checkGameOver();
-                t.saveResults();
-            }
-            t.machineTurn(new Random(), new Random());
-            if (t.checkForWinner(t.computer)) {
-                t.checkGameOver();
-                t.saveResults();
             }
         }
     }

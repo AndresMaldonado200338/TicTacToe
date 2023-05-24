@@ -35,10 +35,11 @@ public class Presenter implements ActionListener {
     }
 
     public void match() {
+        JRadioButton radioButton = new JRadioButton();
         while (!ticTacToe.getGameOver() && !ticTacToe.isFullBoard()) {
             for (int i = 0; i < viewGUI.getRadioButtons().length; i++) {
                 for (int j = 0; j < viewGUI.getRadioButtons()[i].length; j++) {
-                    if (viewGUI.getRadioButtons()[i][j].isSelected()) {
+                    if (radioButton == viewGUI.getRadioButtons()[i][j]) {
                         ticTacToe.playerTurn(i, j);
                         if (ticTacToe.checkForWinner(ticTacToe.getPlayer())) {
                             ticTacToe.checkGameOver();
@@ -74,7 +75,6 @@ public class Presenter implements ActionListener {
                 Figure figure = (userFigure.equals("Circle")) ? Figure.CIRCLE : Figure.CROSS;
                 user.setUserFigure(figure);
                 viewGUI.getMainFrame().dispose();
-                System.out.println(user);
                 gameScreen();
             }
         }
