@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 import model.*;
 import view.*;
@@ -30,26 +31,27 @@ public class Presenter implements ActionListener {
     public void gameScreen() {
         viewGUI.gameMenu(user);
         ticTacToe.chooseFigure(user);
+        ticTacToe.initBoard();
     }
 
-    public void game() {
-        while (!ticTacToe.isFullBoard() && !ticTacToe.checkGameOver()) {
-            
-            // view.showGraphicMessage(ticTacToe.showBoard());
-            if (ticTacToe.checkGameOver()) {
-                break;
-            }
-            machineTurn();
-            // view.showGraphicMessage(ticTacToe.showBoard());
-            if (ticTacToe.checkGameOver()) {
-                break;
+    public void match() {
+        while (!ticTacToe.getGameOver() && !ticTacToe.isFullBoard()) {
+            for (int i = 0; i < viewGUI.getRadioButtons().length; i++) {
+                for (int j = 0; j < viewGUI.getRadioButtons()[i].length; j++) {
+                    if (viewGUI.getRadioButtons()[i][j].isSelected()) {
+                        ticTacToe.playerTurn(i, j);
+                        if (ticTacToe.checkForWinner(ticTacToe.getPlayer())) {
+                            ticTacToe.checkGameOver();
+                        }
+                        ticTacToe.machineTurn(new Random(), new Random());
+                        if (ticTacToe.checkForWinner(ticTacToe.getComputer())) {
+                            ticTacToe.checkGameOver();
+                        }
+                    }
+                }
             }
         }
         ticTacToe.saveResults();
-    }
-
-    public void machineTurn() {
-        ticTacToe.machineTurn(new Random(), new Random());
     }
 
     @Override

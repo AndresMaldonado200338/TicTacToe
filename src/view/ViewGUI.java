@@ -1,14 +1,12 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
@@ -198,20 +196,8 @@ public class ViewGUI {
         radioButtons = board.getBoard();
         for (int row = 0; row < radioButtons.length; row++) {
             for (int col = 0; col < radioButtons[row].length; col++) {
-                
-                radioButtons[row][col].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JRadioButton selectedButton = (JRadioButton) e.getSource();
-                        for (int row = 0; row < radioButtons.length; row++) {
-                            for (int col = 0; col < radioButtons[row].length; col++) {
-                                if (radioButtons[row][col] == selectedButton) {
-                                }
-                            }
-                        }
-                    }
-                });
                 pane1.add(radioButtons[row][col]);
+                radioButtons[row][col].addActionListener(listener);
             }
         }
 

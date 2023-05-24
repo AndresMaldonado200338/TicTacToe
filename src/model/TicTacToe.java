@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -7,10 +8,13 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 public class TicTacToe {
@@ -18,9 +22,7 @@ public class TicTacToe {
     private ButtonGroup buttonGroup;
 
     private User user;
-    private ImageIcon playerF;
     private Icon player;
-    private ImageIcon computerF;
     private Icon computer;
     private boolean gameOver;
     private GameStatus gameStatus;
@@ -28,6 +30,7 @@ public class TicTacToe {
     private DateTimeFormatter formatter;
 
     private String path = "Triki/src/resources/History/history_game.txt";
+
     private ImageIcon circle = new ImageIcon("Triki/src/resources/Figures/O.png");
     private Icon circleIcon = new ImageIcon(circle.getImage().getScaledInstance(140, 100, Image.SCALE_SMOOTH));
     private ImageIcon cross = new ImageIcon("Triki/src/resources/Figures/X.png");
@@ -51,6 +54,22 @@ public class TicTacToe {
         return gameStatus.getStatusName();
     }
 
+    public boolean getGameOver() {
+        return gameOver;
+    }
+
+    public JRadioButton[][] getBoard() {
+        return board;
+    }
+
+    public Icon getPlayer() {
+        return player;
+    }
+
+    public Icon getComputer() {
+        return computer;
+    }
+
     public void initBoard() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
@@ -61,14 +80,10 @@ public class TicTacToe {
         }
     }
 
-    public JRadioButton[][] getBoard() {
-        return board;
-    }
-
     public void chooseFigure(User user) {
         this.user = user;
-        player =  user.getUserFigure().equals("Circle") ? crossIcon : circleIcon;
-        computer = player == crossIcon ? circleIcon : crossIcon;
+        player = (user.getUserFigure().equals(Figure.CIRCLE.getFigureText())) ? circleIcon : crossIcon;
+        computer = (player == circleIcon) ? crossIcon : circleIcon;
     }
 
     public boolean isCellEmpty(int row, int col) {
@@ -132,7 +147,7 @@ public class TicTacToe {
                     boolean playerWinningMove = checkForWinner(player);
                     removeFigure(row, col);
                     if (playerWinningMove) {
-                        placeFigure(row, col, figure);
+                        placeFigure(row, col, computer);
                         return true;
                     }
                 }
@@ -152,6 +167,8 @@ public class TicTacToe {
     public void placeFigure(int row, int col, Icon figure) {
         if (isValidPosition(row, col) && isCellEmpty(row, col)) {
             board[row][col].setIcon(figure);
+        } else {
+
         }
     }
 
@@ -187,12 +204,12 @@ public class TicTacToe {
             setGameStatus(GameStatus.LOSER);
             System.out.println(getGameStatus());
             gameOver = true;
-            return gameOver;
+            return true;
         } else if (isFullBoard()) {
             setGameStatus(GameStatus.TIE);
             System.out.println(getGameStatus());
             gameOver = true;
-            return gameOver;
+            return true;
         }
         return gameOver;
     }
@@ -204,6 +221,63 @@ public class TicTacToe {
             bufferedWriter.newLine();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void game(int row, int col) {
+        while (getGameOver() == false && isFullBoard() == false) {
+            playerTurn(row, col);
+            if (checkForWinner(player)) {
+                checkGameOver();
+                saveResults();
+            }
+            machineTurn(new Random(), new Random());
+            if (checkForWinner(computer)) {
+                checkGameOver();
+                saveResults();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        User u = new User();
+        u.setUserFigure(Figure.CROSS);
+        u.setUserName("Juan");
+        TicTacToe t = new TicTacToe();
+        t.chooseFigure(u);
+        t.initBoard();
+
+        JFrame frame = new JFrame();
+        frame.setSize(500, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 3));
+        panel.add(t.board[0][0]);
+        panel.add(t.board[0][1]);
+        panel.add(t.board[0][2]);
+        panel.add(t.board[1][0]);
+        panel.add(t.board[1][1]);
+        panel.add(t.board[1][2]);
+        panel.add(t.board[2][0]);
+        panel.add(t.board[2][1]);
+        panel.add(t.board[2][2]);
+
+        frame.add(panel);
+        while (t.getGameOver() == false && t.isFullBoard() == false) {
+            t.playerTurn(sc.nextInt(), sc.nextInt());
+            if (t.checkForWinner(t.player)) {
+                t.checkGameOver();
+                t.saveResults();
+            }
+            t.machineTurn(new Random(), new Random());
+            if (t.checkForWinner(t.computer)) {
+                t.checkGameOver();
+                t.saveResults();
+            }
         }
     }
 }

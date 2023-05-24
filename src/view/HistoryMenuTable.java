@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,12 +34,6 @@ public class HistoryMenuTable extends JTable {
             while ((line = br.readLine()) != null) {
                 rowValues = line.split(";");
                 model.addRow(rowValues);
-            }
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    System.out.print(model.getValueAt(i, j) + " ");
-                }
-                System.out.println();
             }
         } catch (IOException e) {
             e.printStackTrace();
